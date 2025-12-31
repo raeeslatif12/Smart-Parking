@@ -55,7 +55,7 @@ const LostTokenPage = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Penalty Amount
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="hidden sm:px-6 sm:py-3 sm:text-left sm:text-xs sm:font-medium sm:text-gray-500 sm:uppercase sm:tracking-wider">
                     Exit Time
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -68,7 +68,7 @@ const LostTokenPage = () => {
                   ? [
                       <tr key="no-data">
                         <td
-                          colSpan="6"
+                          colSpan="5"
                           className="px-6 py-4 text-center text-gray-500"
                         >
                           No lost token vehicles found
@@ -89,7 +89,7 @@ const LostTokenPage = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           ${vehicle.penaltyAmount}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="hidden sm:px-6 sm:py-4 sm:whitespace-nowrap sm:text-sm sm:text-gray-500">
                           {formatDate(vehicle.outTime)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

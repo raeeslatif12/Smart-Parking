@@ -116,9 +116,9 @@ const LostTokenFormPage = () => {
           </h1>
         </div>
         <div className="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
-          <div className="p-8">
+          <div className="p-4 sm:p-6 lg:p-8">
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:gap-8 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Vehicle Registration Number
