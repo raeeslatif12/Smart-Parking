@@ -22,10 +22,9 @@ const DashboardPage = () => {
     { name: "Vehicles In", value: vehiclesIn },
     { name: "Vehicles Out", value: vehiclesOut },
     { name: "Parking Within 24hrs", value: parkingWithin24hrs },
-    { name: "Total Income", value: totalIncome },
   ];
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
 
   return (
     <div className="py-4 sm:py-6 min-h-screen  from-blue-50 via-indigo-50 to-purple-50">
@@ -157,28 +156,34 @@ const DashboardPage = () => {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             Vehicle Statistics
           </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {pieData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value, name) => [value, name]} />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {pieData.some((d) => d.value > 0) ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value, name) => [value, name]} />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-64 text-gray-500">
+              No data available
+            </div>
+          )}
         </div>
       </div>
     </div>
