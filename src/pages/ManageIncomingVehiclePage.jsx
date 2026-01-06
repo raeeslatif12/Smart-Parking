@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { moveToOutVehicle } from "../store/vehiclesSlice";
 import { updateStats } from "../store/parkingSlice";
-import { calculateTotalFee } from "../utils/feeCalculator";
+import { calculateTotalFee, getFeeBreakdown } from "../utils/feeCalculator";
 import { toast } from "react-toastify";
 
 const ManageIncomingVehiclePage = () => {
@@ -48,11 +48,14 @@ const ManageIncomingVehiclePage = () => {
     if (isOutgoing) {
       const category = categories.find((cat) => cat.name === vehicle.category);
       const feePer24Hours = category ? category.feePer24Hours : 10;
-      const totalCharge = calculateTotalFee(
+      const extraHourRate = category ? category.extraHourRate : 5;
+      const breakdown = getFeeBreakdown(
         vehicle.entryTime,
         new Date().toISOString(),
-        feePer24Hours
+        feePer24Hours,
+        extraHourRate
       );
+      const totalCharge = breakdown.finalAmount;
       dispatch(moveToOutVehicle({ id: vehicle.id, totalCharge, remarks }));
       dispatch(
         updateStats({
@@ -74,7 +77,7 @@ const ManageIncomingVehiclePage = () => {
   };
 
   return (
-    <div className="py-6 min-h-screen  from-blue-50 via-indigo-50 to-purple-50">
+    <div className="py-6 flex-1">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">
@@ -110,12 +113,12 @@ const ManageIncomingVehiclePage = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Parking Number
-                  </label>
-                  <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">
-                    {vehicle.slot}
-                  </div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Parking Number</label>
+                  <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">{vehicle.parkingNumber || ""}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Slot</label>
+                  <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">{vehicle.slot || ""}</div>
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -151,7 +154,7 @@ const ManageIncomingVehiclePage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Total Charge
+                    Fee Breakdown
                   </label>
                   <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">
                     {(() => {
@@ -161,13 +164,27 @@ const ManageIncomingVehiclePage = () => {
                       const feePer24Hours = category
                         ? category.feePer24Hours
                         : 10;
-                      return calculateTotalFee(
+                      const extraHourRate = category
+                        ? category.extraHourRate
+                        : 5;
+                      const breakdown = getFeeBreakdown(
                         vehicle.entryTime,
                         new Date().toISOString(),
-                        feePer24Hours
-                      ).toFixed(2);
+                        feePer24Hours,
+                        extraHourRate
+                      );
+                      return (
+                        <div className="space-y-1">
+                          <div>Entry Time: {breakdown.entryTime}</div>
+                          <div>Exit Time: {breakdown.exitTime}</div>
+                          <div>Total Duration: {breakdown.totalDuration} hours</div>
+                          <div>Base Fee (24h): ${breakdown.baseFee}</div>
+                          <div>Extra Hours: {breakdown.extraHours}</div>
+                          <div>Extra Charges: ${breakdown.extraCharges}</div>
+                          <div className="font-bold">Final Amount: ${breakdown.finalAmount}</div>
+                        </div>
+                      );
                     })()}
-                    $
                   </div>
                 </div>
                 <div>
@@ -184,7 +201,7 @@ const ManageIncomingVehiclePage = () => {
                       type="checkbox"
                       checked={isOutgoing}
                       onChange={(e) => setIsOutgoing(e.target.checked)}
-                      className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-5 w-5 text-gray-900 focus:ring-gray-500 border-gray-300 rounded"
                     />
                     <span className="ml-3 text-sm font-medium text-gray-700">
                       Outgoing Vehicle

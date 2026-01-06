@@ -5,6 +5,12 @@ const STORAGE_KEYS = {
   LOST_TOKEN_VEHICLES: "lostTokenVehicles",
   CATEGORIES: "vehicleCategories",
   PARKING_STATS: "parkingStats",
+  SLOTS: "slots",
+  SIDEBAR_COLLAPSED: "sidebarCollapsed",
+  EXPENSES: "expenses",
+  SLOT_TYPES: "slotTypes",
+  EXPENSE_TYPES: "expenseTypes",
+  ALERTS: "alerts",
 };
 
 const getItem = (key, defaultValue = null) => {

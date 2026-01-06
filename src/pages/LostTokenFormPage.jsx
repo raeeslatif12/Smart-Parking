@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { moveToLostToken } from "../store/vehiclesSlice";
 import { addLostTokenVehicle } from "../store/lostTokenSlice";
 import { updateStats } from "../store/parkingSlice";
-import { calculateTotalFee } from "../utils/feeCalculator";
+import { calculateTotalFee, getFeeBreakdown } from "../utils/feeCalculator";
 import { toast } from "react-toastify";
 
 const LostTokenFormPage = () => {
@@ -62,12 +62,15 @@ const LostTokenFormPage = () => {
     e.preventDefault();
     const category = categories.find((cat) => cat.name === vehicle.category);
     const feePer24Hours = category ? category.feePer24Hours : 10;
+    const extraHourRate = category ? category.extraHourRate : 5;
     const lostTokenPenalty = category ? category.lostTokenPenalty : 50;
-    const parkingFee = calculateTotalFee(
+    const breakdown = getFeeBreakdown(
       vehicle.entryTime,
       new Date().toISOString(),
-      feePer24Hours
+      feePer24Hours,
+      extraHourRate
     );
+    const parkingFee = breakdown.finalAmount;
     const totalCharge = parkingFee + lostTokenPenalty;
     dispatch(
       moveToLostToken({
@@ -108,7 +111,7 @@ const LostTokenFormPage = () => {
   };
 
   return (
-    <div className="py-6 min-h-screen  from-blue-50 via-indigo-50 to-purple-50">
+    <div className="py-6 flex-1">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">
@@ -144,12 +147,12 @@ const LostTokenFormPage = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Parking Number
-                  </label>
-                  <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">
-                    {vehicle.slot}
-                  </div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Parking Number</label>
+                  <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">{vehicle.parkingNumber || ""}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Slot</label>
+                  <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">{vehicle.slot || ""}</div>
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -225,7 +228,7 @@ const LostTokenFormPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Total Charge (Parking + Penalty)
+                    Fee Breakdown
                   </label>
                   <div className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg bg-gray-100 text-gray-700 shadow-sm">
                     {(() => {
@@ -235,17 +238,31 @@ const LostTokenFormPage = () => {
                       const feePer24Hours = category
                         ? category.feePer24Hours
                         : 10;
+                      const extraHourRate = category
+                        ? category.extraHourRate
+                        : 5;
                       const lostTokenPenalty = category
                         ? category.lostTokenPenalty
                         : 50;
-                      const parkingFee = calculateTotalFee(
+                      const breakdown = getFeeBreakdown(
                         vehicle.entryTime,
                         new Date().toISOString(),
-                        feePer24Hours
+                        feePer24Hours,
+                        extraHourRate
                       );
-                      return (parkingFee + lostTokenPenalty).toFixed(2);
+                      return (
+                        <div className="space-y-1">
+                          <div>Entry Time: {breakdown.entryTime}</div>
+                          <div>Exit Time: {breakdown.exitTime}</div>
+                          <div>Total Duration: {breakdown.totalDuration} hours</div>
+                          <div>Base Fee (24h): ${breakdown.baseFee}</div>
+                          <div>Extra Hours: {breakdown.extraHours}</div>
+                          <div>Extra Charges: ${breakdown.extraCharges}</div>
+                          <div>Penalty: ${lostTokenPenalty}</div>
+                          <div className="font-bold">Final Amount: ${breakdown.finalAmount + lostTokenPenalty}</div>
+                        </div>
+                      );
                     })()}
-                    $
                   </div>
                 </div>
                 <div className="sm:col-span-2">

@@ -18,14 +18,17 @@ const Breadcrumb = () => {
   const currentPageName = getPageName(location.pathname);
 
   return (
-    <nav className="flex mb-6" aria-label="Breadcrumb">
-      <ol className="inline-flex items-center space-x-1 md:space-x-3">
+    <nav className="flex mb-8" aria-label="Breadcrumb">
+      <ol className="inline-flex items-center space-x-2 md:space-x-4 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl border border-gray-200/60 shadow-sm">
         <li className="inline-flex items-center">
           <Link
             to="/dashboard"
-            className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-indigo-600"
+            className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200"
           >
-            Home
+            <svg className="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Dashboard
           </Link>
         </li>
         {location.pathname !== "/dashboard" && (
@@ -33,7 +36,7 @@ const Breadcrumb = () => {
             <li>
               <div className="flex items-center">
                 <svg
-                  className="w-3 h-3 text-gray-400 mx-1"
+                  className="w-4 h-4 text-gray-400"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -47,7 +50,7 @@ const Breadcrumb = () => {
                     d="m1 9 4-4-4-4"
                   />
                 </svg>
-                <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2">
+                <span className="ml-2 text-sm font-semibold text-gray-900">
                   {currentPageName}
                 </span>
               </div>

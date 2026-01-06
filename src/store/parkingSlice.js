@@ -8,15 +8,8 @@ const getInitialState = () => {
     vehiclesOut: 0,
     parkingWithin24hrs: 0,
     totalIncome: 0,
-    incomeHistory: [
-      { date: "2025-12-25", income: 50 },
-      { date: "2025-12-26", income: 75 },
-      { date: "2025-12-27", income: 100 },
-      { date: "2025-12-28", income: 125 },
-      { date: "2025-12-29", income: 150 },
-      { date: "2025-12-30", income: 175 },
-      { date: "2025-12-31", income: 200 },
-    ],
+    totalExpenses: 0,
+    netProfit: 0,
   };
   return getItem(STORAGE_KEYS.PARKING_STATS, defaultStats);
 };
@@ -33,21 +26,14 @@ const parkingSlice = createSlice({
       state.vehiclesOut = action.payload.vehiclesOut;
       state.parkingWithin24hrs = action.payload.parkingWithin24hrs;
       const newIncome = action.payload.totalIncome;
-      if (newIncome !== undefined && newIncome !== state.totalIncome) {
+      if (newIncome !== undefined) {
         state.totalIncome = newIncome;
-        const currentDate = new Date().toISOString().split("T")[0];
-        if (!Array.isArray(state.incomeHistory)) {
-          state.incomeHistory = [];
-        }
-        const lastEntry = state.incomeHistory[state.incomeHistory.length - 1];
-        if (!lastEntry || lastEntry.date !== currentDate) {
-          state.incomeHistory.push({
-            date: currentDate,
-            income: newIncome,
-          });
-        } else {
-          lastEntry.income = newIncome;
-        }
+      }
+      if (action.payload.totalExpenses !== undefined) {
+        state.totalExpenses = action.payload.totalExpenses;
+      }
+      if (action.payload.netProfit !== undefined) {
+        state.netProfit = action.payload.netProfit;
       }
       setItem(STORAGE_KEYS.PARKING_STATS, state);
     },

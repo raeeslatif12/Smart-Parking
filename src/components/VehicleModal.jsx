@@ -41,29 +41,33 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle, categories }) => {
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div className="fixed inset-0 transition-opacity backdrop-blur-sm" aria-hidden="true">
+          <div
+            className="absolute inset-0 bg-gray-900/60"
+            onClick={onClose}
+          ></div>
         </div>
-        <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
-        >
-          &#8203;
-        </span>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div className="sm:flex sm:items-start">
-              <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+        <div className="inline-block align-bottom card text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full fade-in">
+          <form onSubmit={handleSubmit}>
+            <div className="px-6 pt-6 pb-4">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-gray-900">
                   Update Vehicle
                 </h3>
-                <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
                       <label
                         htmlFor="regNumber"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
                       >
                         Registration Number
                       </label>
@@ -73,14 +77,14 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle, categories }) => {
                         name="regNumber"
                         value={formData.regNumber}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="form-input w-full"
                         required
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="company"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
                       >
                         Company
                       </label>
@@ -90,14 +94,14 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle, categories }) => {
                         name="company"
                         value={formData.company}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="form-input w-full"
                         required
                       />
                     </div>
                     <div>
                       <label
                         htmlFor="category"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
                       >
                         Category
                       </label>
@@ -106,7 +110,7 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle, categories }) => {
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="form-input w-full"
                         required
                       >
                         <option value="">Select Category</option>
@@ -120,7 +124,7 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle, categories }) => {
                     <div>
                       <label
                         htmlFor="ownerName"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
                       >
                         Owner Name
                       </label>
@@ -130,14 +134,14 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle, categories }) => {
                         name="ownerName"
                         value={formData.ownerName}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="form-input w-full"
                         required
                       />
                     </div>
                     <div className="sm:col-span-2">
                       <label
                         htmlFor="contact"
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-semibold text-gray-700 mb-2"
                       >
                         Contact
                       </label>
@@ -147,30 +151,30 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle, categories }) => {
                         name="contact"
                         value={formData.contact}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="form-input w-full"
                         required
                       />
                     </div>
                   </div>
-                  <div className="flex justify-end space-x-3 mt-6">
-                    <button
-                      type="button"
-                      onClick={onClose}
-                      className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Update
-                    </button>
-                  </div>
                 </form>
               </div>
             </div>
-          </div>
+            <div className="bg-gray-50/80 px-6 py-4 flex justify-end space-x-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="btn-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn-primary"
+              >
+                Update
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

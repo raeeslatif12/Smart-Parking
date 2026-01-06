@@ -20,7 +20,9 @@ const vehiclesSlice = createSlice({
       const newVehicle = {
         id: Date.now(),
         ...action.payload,
-        slot: state.inVehicles.length + 1,
+        parkingNumber: `P-${Date.now()}`,
+        slot: action.payload.slot || state.inVehicles.length + 1,
+        slotId: action.payload.slotId || null,
         entryTime: new Date().toISOString(),
       };
       state.inVehicles.push(newVehicle);
@@ -97,3 +99,4 @@ export const {
   moveToLostToken,
 } = vehiclesSlice.actions;
 export default vehiclesSlice.reducer;
+  

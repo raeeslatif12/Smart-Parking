@@ -25,7 +25,7 @@ const AddCategoryPage = () => {
   };
 
   return (
-    <div className="py-6 min-h-screen  from-blue-50 via-indigo-50 to-purple-50">
+    <div className="py-6 flex-1">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-900">Add Category</h1>

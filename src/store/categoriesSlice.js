@@ -9,6 +9,7 @@ const getInitialState = () => {
       publishedOn: "12/30/2025",
       feePer24Hours: 10,
       lostTokenPenalty: 50,
+      extraHourRate: 5,
     },
     {
       id: 2,
@@ -16,12 +17,14 @@ const getInitialState = () => {
       publishedOn: "12/29/2025",
       feePer24Hours: 5,
       lostTokenPenalty: 25,
+      extraHourRate: 2,
     },
   ]);
   return categories.map((cat) => ({
     ...cat,
     feePer24Hours: cat.feePer24Hours || 10,
     lostTokenPenalty: cat.lostTokenPenalty || 50,
+    extraHourRate: cat.extraHourRate || 5,
   }));
 };
 
@@ -38,6 +41,7 @@ const categoriesSlice = createSlice({
         publishedOn: new Date().toLocaleDateString(),
         feePer24Hours: action.payload.feePer24Hours || 10,
         lostTokenPenalty: action.payload.lostTokenPenalty || 50,
+        extraHourRate: action.payload.extraHourRate || 5,
       };
       state.push(newCategory);
       setItem(STORAGE_KEYS.CATEGORIES, state);
@@ -58,13 +62,15 @@ const categoriesSlice = createSlice({
       }
     },
     updateCategoryFees: (state, action) => {
-      const { id, feePer24Hours, lostTokenPenalty } = action.payload;
+      const { id, feePer24Hours, lostTokenPenalty, extraHourRate } = action.payload;
       const category = state.find((cat) => cat.id === id);
       if (category) {
         category.feePer24Hours =
           parseFloat(feePer24Hours) || category.feePer24Hours;
         category.lostTokenPenalty =
           parseFloat(lostTokenPenalty) || category.lostTokenPenalty;
+        category.extraHourRate =
+          parseFloat(extraHourRate) || category.extraHourRate;
         setItem(STORAGE_KEYS.CATEGORIES, state);
       }
     },

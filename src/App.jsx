@@ -20,7 +20,16 @@ import TotalIncomePage from "./pages/TotalIncomePage";
 import LostTokenPage from "./pages/LostTokenPage";
 import LostTokenFormPage from "./pages/LostTokenFormPage";
 import FeeManagementPage from "./pages/FeeManagementPage";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import SlotManagementPage from "./pages/SlotManagementPage";
+import AddSlotPage from "./pages/AddSlotPage";
+import ExpenseManagementPage from "./pages/ExpenseManagementPage";
+import AddExpensePage from "./pages/AddExpensePage";
+import AlertsPage from "./pages/AlertsPage";
+import SlotTypesManagementPage from "./pages/SlotTypesManagementPage";
+import ExpenseTypesManagementPage from "./pages/ExpenseTypesManagementPage";
+import AddSlotTypePage from "./pages/AddSlotTypePage";
+import AddExpenseTypePage from "./pages/AddExpenseTypePage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -50,10 +59,13 @@ function App() {
             path="vehicle-categories"
             element={<VehicleCategoriesPage />}
           />
+          <Route path="slots" element={<SlotManagementPage />} />
+          <Route path="add-slot" element={<AddSlotPage />} />
           <Route path="add-category" element={<AddCategoryPage />} />
           <Route path="edit-category/:id" element={<EditCategoryPage />} />
           <Route path="vehicle-entry" element={<VehicleEntryPage />} />
           <Route path="in-vehicles" element={<InVehiclesPage />} />
+          <Route path="edit-profile" element={<EditProfilePage />} />
           <Route
             path="manage-incoming/:vehicleId"
             element={<ManageIncomingVehiclePage />}
@@ -67,7 +79,13 @@ function App() {
           <Route path="lost-token/:vehicleId" element={<LostTokenFormPage />} />
           <Route path="total-income" element={<TotalIncomePage />} />
           <Route path="fee-management" element={<FeeManagementPage />} />
-          <Route path="edit-profile" element={<EditProfilePage />} />
+          <Route path="expense-management" element={<ExpenseManagementPage />} />
+          <Route path="add-expense" element={<AddExpensePage />} />
+          <Route path="alerts" element={<AlertsPage />} />
+          <Route path="slot-types" element={<SlotTypesManagementPage />} />
+          <Route path="add-slot-type" element={<AddSlotTypePage />} />
+          <Route path="expense-types" element={<ExpenseTypesManagementPage />} />
+          <Route path="add-expense-type" element={<AddExpenseTypePage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

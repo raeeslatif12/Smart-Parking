@@ -1,5 +1,178 @@
 @import "tailwindcss";
 
-.sidebar-nav::-webkit-scrollbar {
-  display: none;
+:root{
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --muted: #6b7280;
+  --primary: #155dfc;
+  --primary-hover: #0d4ae8;
+  --secondary: #f1f5f9;
+  --accent: #e2e8f0;
+  --border: #e5e7eb;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --soft-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --medium-shadow: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  --large-shadow: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
 }
+
+/* Layout */
+.app-bg{ background-color: var(--bg); }
+
+/* Cards */
+.card{
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--soft-shadow);
+  border: 1px solid var(--border);
+}
+.card-sm{
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--soft-shadow);
+  border: 1px solid var(--border);
+}
+.card-hover{
+  transition: all 0.2s ease-in-out;
+}
+.card-hover:hover{
+  box-shadow: var(--medium-shadow);
+  transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn-primary{
+  background-color: var(--primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  padding: 0.625rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  border: none;
+}
+.btn-primary:hover{
+  background-color: var(--primary-hover);
+  box-shadow: var(--soft-shadow);
+  transform: translateY(-1px);
+}
+.btn-secondary{
+  background-color: var(--secondary);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.625rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover{
+  background-color: var(--accent);
+  box-shadow: var(--soft-shadow);
+  transform: translateY(-1px);
+}
+
+/* Inputs */
+.form-input{
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.625rem 0.875rem;
+  background-color: var(--card-bg);
+  transition: all 0.2s ease-in-out;
+  font-size: 0.875rem;
+}
+.form-input:focus{
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(21, 93, 252, 0.1);
+}
+.form-input:hover{
+  border-color: var(--text-secondary);
+}
+
+/* Tables */
+.table-card{
+  border-radius: var(--radius);
+  box-shadow: var(--soft-shadow);
+  overflow: hidden;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+}
+.table-row-hover tbody tr{
+  transition: all 0.2s ease-in-out;
+}
+.table-row-hover tbody tr:hover{
+  background: var(--secondary);
+}
+
+/* Badges */
+.badge-primary{
+  background: var(--primary);
+  color: #fff;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge-secondary{
+  background: var(--secondary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge-success{
+  background: var(--success);
+  color: #fff;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge-warning{
+  background: var(--warning);
+  color: #000;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge-error{
+  background: var(--error);
+  color: #fff;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Sidebar */
+.sidebar-nav::-webkit-scrollbar { display: none; }
+
+/* Utility tweaks */
+.soft-rounded{ border-radius: var(--radius-sm); }
+
+/* Typography improvements */
+.text-gradient{
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
