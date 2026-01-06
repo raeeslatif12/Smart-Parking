@@ -126,13 +126,13 @@ const AddSlotPage = () => {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-bold hover:bg-gray-200 hover:shadow-lg transition-all duration-300 hover:scale-105"
+                  className="px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-bold hover:bg-gray-200 hover:shadow-lg transition-all duration-300"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-8 py-4 bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white rounded-2xl font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                  className="px-8 py-4 bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white rounded-2xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center space-x-2"
                 >
                   <span>Add Slot</span>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

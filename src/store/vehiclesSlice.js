@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getItem, setItem, STORAGE_KEYS } from "../utils/localStorage";
+import { getItem, setItem, STORAGE_KEYS } from "../utils/localStorage.js";
 
 const getInitialState = () => {
   const inVehicles = getItem(STORAGE_KEYS.VEHICLES_IN, []);
@@ -88,6 +88,35 @@ const vehiclesSlice = createSlice({
         setItem(STORAGE_KEYS.VEHICLES_OUT, state.outVehicles);
       }
     },
+    blockVehicle: (state, action) => {
+      const { id } = action.payload;
+      const vehicleIndex = state.inVehicles.findIndex((v) => v.id === id);
+      if (vehicleIndex !== -1) {
+        state.inVehicles.splice(vehicleIndex, 1);
+        setItem(STORAGE_KEYS.VEHICLES_IN, state.inVehicles);
+      }
+    },
+    unblockVehicle: (state, action) => {
+      const vehicle = action.payload;
+      state.inVehicles.push(vehicle);
+      setItem(STORAGE_KEYS.VEHICLES_IN, state.inVehicles);
+    },
+    deleteVehicle: (state, action) => {
+      const vehicleId = action.payload;
+      // Remove from inVehicles if present
+      const inIndex = state.inVehicles.findIndex((v) => v.id === vehicleId);
+      if (inIndex !== -1) {
+        state.inVehicles.splice(inIndex, 1);
+        setItem(STORAGE_KEYS.VEHICLES_IN, state.inVehicles);
+        return;
+      }
+      // Remove from outVehicles if present
+      const outIndex = state.outVehicles.findIndex((v) => v.id === vehicleId);
+      if (outIndex !== -1) {
+        state.outVehicles.splice(outIndex, 1);
+        setItem(STORAGE_KEYS.VEHICLES_OUT, state.outVehicles);
+      }
+    },
   },
 });
 
@@ -97,6 +126,9 @@ export const {
   deleteInVehicle,
   moveToOutVehicle,
   moveToLostToken,
+  blockVehicle,
+  unblockVehicle,
+  deleteVehicle,
 } = vehiclesSlice.actions;
 export default vehiclesSlice.reducer;
   

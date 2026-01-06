@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../store/authSlice";
+import { logout, resetLoginForm } from "../store/authSlice";
 import { toast } from "react-toastify";
 import { FaParking, FaBars, FaCog, FaSignOutAlt, FaBell, FaTimes } from "react-icons/fa";
 import { markRead, dismissAlert } from "../store/alertsSlice";
@@ -38,8 +38,14 @@ const Navbar = ({ toggleSidebar, className }) => {
 
   const handleLogout = () => {
     dispatch(logout());
+    
+    dispatch(resetLoginForm());
+    
     toast.success("Logged out successfully!");
+    
     navigate("/");
+    
+    setIsOpen(false);
   };
 
   const handleEditProfile = () => {
@@ -48,7 +54,7 @@ const Navbar = ({ toggleSidebar, className }) => {
   };
 
   return (
-    <nav className={`relative border-b border-gray-100/80 bg-white/95 backdrop-blur-xl shadow-sm ${className || ''}`}>
+    <nav className={`relative border-b border-gray-100 bg-white shadow-sm ${className || ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
@@ -60,7 +66,7 @@ const Navbar = ({ toggleSidebar, className }) => {
             </button>
 
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <div className="bg-gradient-to-br from-[#155dfc] to-[#0d4ae8] p-2 sm:p-3 rounded-2xl shadow-xl ring-2 ring-white/20">
+              <div className="bg-[#155dfc] p-2 sm:p-3 rounded-2xl shadow-lg">
                 <FaParking className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
@@ -92,8 +98,8 @@ const Navbar = ({ toggleSidebar, className }) => {
               </button>
 
                 {isAlertsOpen && (
-                <div className="absolute right-0 top-full mt-3 w-80 bg-white rounded-2xl shadow-2xl z-50 border border-gray-100/80 overflow-hidden backdrop-blur-sm">
-                  <div className="px-4 py-3 border-b border-gray-100/80 bg-gradient-to-r from-slate-50 to-white">
+                <div className="absolute right-0 top-full mt-3 w-80 bg-white rounded-2xl shadow-xl z-50 border border-gray-100 overflow-hidden">
+                  <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
                     <p className="text-sm font-semibold text-gray-900">Notifications</p>
                   </div>
                   <div className="max-h-60 overflow-y-auto">
@@ -108,7 +114,7 @@ const Navbar = ({ toggleSidebar, className }) => {
                           <div className="flex-1 pr-2">
                             <div className="flex items-center justify-between">
                               <p className="text-sm text-gray-800 font-medium">{a.message}</p>
-                              <button onClick={(e) => { e.stopPropagation(); dispatch(dismissAlert(a.id)); }} className="text-gray-400 hover:text-gray-600 ml-2 p-1 rounded-lg hover:bg-gray-100 transition-all duration-200 hover:scale-110">
+                              <button onClick={(e) => { e.stopPropagation(); dispatch(dismissAlert(a.id)); }} className="text-gray-400 hover:text-gray-600 ml-2 p-1 rounded-lg hover:bg-gray-100 transition-all duration-200">
                                 <FaTimes className="w-3 h-3" />
                               </button>
                             </div>
@@ -136,9 +142,9 @@ const Navbar = ({ toggleSidebar, className }) => {
                 ref={dropdownRef}
                 className="absolute right-0 top-full mt-3 w-64 bg-white rounded-2xl shadow-2xl z-50 border border-gray-100/80 overflow-hidden backdrop-blur-sm"
               >
-                <div className="px-4 py-4 border-b border-gray-100/80 bg-gradient-to-r from-slate-50 to-white">
+                <div className="px-4 py-4 border-b border-gray-100 bg-gray-50">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#155dfc] to-[#0d4ae8] rounded-2xl flex items-center justify-center text-white font-bold shadow-xl ring-2 ring-white/20">
+                    <div className="w-12 h-12 bg-[#155dfc] rounded-2xl flex items-center justify-center text-white font-bold shadow-lg">
                       {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
                     </div>
                     <div>

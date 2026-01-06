@@ -15,10 +15,8 @@ const ExpenseManagementPage = () => {
   const totalExpenses = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this expense?")) {
-      dispatch(deleteExpense(id));
-      toast.success("Expense deleted successfully");
-    }
+    dispatch(deleteExpense(id));
+    toast.success("Expense deleted successfully");
   };
 
   const handleEdit = (expense) => {
@@ -142,13 +140,13 @@ const ExpenseManagementPage = () => {
                         <div className="flex space-x-3">
                           <button
                             onClick={handleSaveEdit}
-                            className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                            className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                           >
                             Save
                           </button>
                           <button
                             onClick={handleCancelEdit}
-                            className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                            className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                           >
                             Cancel
                           </button>
@@ -157,14 +155,14 @@ const ExpenseManagementPage = () => {
                         <div className="flex space-x-3">
                           <button
                             onClick={() => handleEdit(expense)}
-                            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white p-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+                            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white p-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                             title="Edit Expense"
                           >
                             <FaEdit className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(expense.id)}
-                            className="bg-gradient-to-r from-red-500 to-red-600 text-white p-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300"
+                            className="bg-gradient-to-r from-red-500 to-red-600 text-white p-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                             title="Delete Expense"
                           >
                             <FaTrash className="w-4 h-4" />

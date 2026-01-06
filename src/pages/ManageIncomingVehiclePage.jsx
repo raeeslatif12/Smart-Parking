@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { moveToOutVehicle } from "../store/vehiclesSlice";
+import { moveToOutVehicle, blockVehicle } from "../store/vehiclesSlice";
 import { updateStats } from "../store/parkingSlice";
 import { calculateTotalFee, getFeeBreakdown } from "../utils/feeCalculator";
 import { toast } from "react-toastify";
@@ -17,6 +17,8 @@ const ManageIncomingVehiclePage = () => {
 
   const [remarks, setRemarks] = useState("");
   const [isOutgoing, setIsOutgoing] = useState(true);
+  const [isBlocking, setIsBlocking] = useState(false);
+  const [blockReason, setBlockReason] = useState("");
 
   useEffect(() => {
     if (!vehicle) {
@@ -45,7 +47,12 @@ const ManageIncomingVehiclePage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isOutgoing) {
+    if (isBlocking) {
+      dispatch(blockVehicle({ id: vehicle.id, blockReason, remarks }));
+      localStorage.removeItem(`manageIncoming_${vehicleId}`);
+      navigate("/dashboard/blocked-vehicles");
+      toast.warning("Vehicle has been blocked!");
+    } else if (isOutgoing) {
       const category = categories.find((cat) => cat.name === vehicle.category);
       const feePer24Hours = category ? category.feePer24Hours : 10;
       const extraHourRate = category ? category.extraHourRate : 5;
@@ -196,18 +203,57 @@ const ManageIncomingVehiclePage = () => {
                   </div>
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={isOutgoing}
-                      onChange={(e) => setIsOutgoing(e.target.checked)}
-                      className="h-5 w-5 text-gray-900 focus:ring-gray-500 border-gray-300 rounded"
-                    />
-                    <span className="ml-3 text-sm font-medium text-gray-700">
-                      Outgoing Vehicle
-                    </span>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Action Type
                   </label>
+                  <div className="space-y-2">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="actionType"
+                        checked={isOutgoing && !isBlocking}
+                        onChange={() => {
+                          setIsOutgoing(true);
+                          setIsBlocking(false);
+                        }}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Outgoing Vehicle</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="actionType"
+                        checked={isBlocking}
+                        onChange={() => {
+                          setIsBlocking(true);
+                          setIsOutgoing(false);
+                        }}
+                        className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Block Vehicle</span>
+                    </label>
+                  </div>
                 </div>
+                {isBlocking && (
+                  <div className="sm:col-span-2">
+                    <label
+                      htmlFor="blockReason"
+                      className="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Block Reason
+                    </label>
+                    <textarea
+                      id="blockReason"
+                      value={blockReason}
+                      onChange={(e) => setBlockReason(e.target.value)}
+                      rows="3"
+                      className="w-full px-4 py-3 border-2 border-red-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 resize-none"
+                      placeholder="Enter reason for blocking the vehicle"
+                      required={isBlocking}
+                    />
+                  </div>
+                )}
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="remarks"
@@ -236,9 +282,13 @@ const ManageIncomingVehiclePage = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-8 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                  className={`px-8 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-all duration-200 ${
+                    isBlocking
+                      ? "bg-red-600 hover:bg-red-700 focus:ring-red-500"
+                      : "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
+                  } focus:outline-none focus:ring-2 focus:ring-offset-2`}
                 >
-                  Submit for Outgoing
+                  {isBlocking ? "Block Vehicle" : "Submit for Outgoing"}
                 </button>
               </div>
             </form>

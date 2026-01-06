@@ -121,13 +121,13 @@ const FeeManagementPage = () => {
                           <div className="flex space-x-3">
                             <button
                               onClick={() => handleSave(category.id)}
-                              className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                              className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                             >
                               Save
                             </button>
                             <button
                               onClick={handleCancel}
-                              className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                              className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                             >
                               Cancel
                             </button>
@@ -135,7 +135,7 @@ const FeeManagementPage = () => {
                         ) : (
                           <button
                             onClick={() => handleEdit(category.id)}
-                            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
                           >
                             Edit
                           </button>

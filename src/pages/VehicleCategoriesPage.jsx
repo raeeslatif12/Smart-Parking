@@ -19,7 +19,7 @@ const VehicleCategoriesPage = () => {
           </h1>
           <Link
             to="/dashboard/add-category"
-            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
+            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
           >
             Add Category
           </Link>
@@ -64,13 +64,13 @@ const VehicleCategoriesPage = () => {
                       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                         <Link
                           to={`/dashboard/edit-category/${category.id}`}
-                          className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
+                          className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
                         >
                           Update
                         </Link>
                         <button
                           onClick={() => handleDeleteCategory(category.id)}
-                          className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
+                          className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
                         >
                           Delete
                         </button>

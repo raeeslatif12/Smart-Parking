@@ -11,6 +11,8 @@ const STORAGE_KEYS = {
   SLOT_TYPES: "slotTypes",
   EXPENSE_TYPES: "expenseTypes",
   ALERTS: "alerts",
+  ADMINS: "admins",
+  BLOCKED_VEHICLES: "blockedVehicles",
 };
 
 const getItem = (key, defaultValue = null) => {

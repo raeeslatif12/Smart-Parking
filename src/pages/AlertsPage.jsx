@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { markRead, dismissAlert, removeAlert, clearAlerts } from "../store/alertsSlice";
 import { FaTimes } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const AlertsPage = () => {
   const dispatch = useDispatch();
@@ -19,9 +20,8 @@ const AlertsPage = () => {
   };
 
   const handleClear = () => {
-    if (window.confirm("Clear all alerts?")) {
-      dispatch(clearAlerts());
-    }
+    dispatch(clearAlerts());
+    toast?.success && toast.success && toast.success('All alerts cleared');
   };
 
   const colorForType = (t) => {
@@ -36,7 +36,7 @@ const AlertsPage = () => {
         <div className="mb-6 flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-[#0f172a]">Alerts</h1>
           <div className="flex items-center space-x-3">
-            <button onClick={handleClear} className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">Clear All</button>
+            <button onClick={handleClear} className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300">Clear All</button>
           </div>
         </div>
 
@@ -67,9 +67,9 @@ const AlertsPage = () => {
                     <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-700 font-medium">{a.status}</td>
                     <td className="px-6 py-5 whitespace-nowrap text-sm font-medium">
                       <div className="flex items-center space-x-3">
-                        <button onClick={() => handleMarkRead(a.id)} className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">Mark Read</button>
-                        <button onClick={() => handleDismiss(a.id)} className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">Dismiss</button>
-                        <button onClick={() => handleRemove(a.id)} className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center"><FaTimes className="mr-2"/> Remove</button>
+                        <button onClick={() => handleMarkRead(a.id)} className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300">Mark Read</button>
+                        <button onClick={() => handleDismiss(a.id)} className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300">Dismiss</button>
+                        <button onClick={() => handleRemove(a.id)} className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center"><FaTimes className="mr-2"/> Remove</button>
                       </div>
                     </td>
                   </tr>

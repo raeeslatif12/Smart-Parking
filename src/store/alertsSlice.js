@@ -23,7 +23,6 @@ const alertsSlice = createSlice({
         status: "new",
         related,
       };
-      // Prevent exact duplicate in last 5 minutes
       const recent = state.filter(
         (a) => a.message === alert.message && Date.now() - new Date(a.timestamp).getTime() < 5 * 60 * 1000
       );

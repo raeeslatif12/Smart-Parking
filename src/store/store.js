@@ -12,11 +12,13 @@ import expensesReducer from "./expensesSlice";
 import alertsReducer, { addAlert } from "./alertsSlice";
 import slotTypesReducer from "./slotTypesSlice";
 import expenseTypesReducer from "./expenseTypesSlice";
+import adminsReducer from "./adminsSlice";
+import blockedVehiclesReducer, { blockVehicle as blockVehicleInBlocked, unblockVehicle as unblockVehicleInBlocked } from "./blockedVehiclesSlice";
+import auditReducer, { addLog } from "./auditSlice";
 import { setItem, STORAGE_KEYS } from "../utils/localStorage";
 
 const listenerMiddleware = createListenerMiddleware();
 
-// Stats Listener
 listenerMiddleware.startListening({
   predicate: (action, currentState, previousState) => {
     return (
@@ -60,12 +62,13 @@ listenerMiddleware.startListening({
   },
 });
 
-// Slot Occupancy Listener
 listenerMiddleware.startListening({
   predicate: (action) =>
     action.type === "vehicles/addInVehicle" ||
     action.type === "vehicles/moveToOutVehicle" ||
-    action.type === "vehicles/moveToLostToken",
+    action.type === "vehicles/moveToLostToken" ||
+    action.type === "vehicles/blockVehicle" ||
+    action.type === "vehicles/unblockVehicle",
   effect: (action, listenerApi) => {
     const state = listenerApi.getState();
 
@@ -73,7 +76,6 @@ listenerMiddleware.startListening({
       const { slotId } = action.payload;
       if (slotId) {
         listenerApi.dispatch(incrementSlotUsage(slotId));
-        // If slot becomes full after this increment, create a warning alert
         const slot = state.slots.find((s) => s.id === slotId);
         if (slot && slot.used + 1 >= slot.capacity) {
           listenerApi.dispatch(
@@ -84,7 +86,6 @@ listenerMiddleware.startListening({
             })
           );
         }
-        // General entry alert
         listenerApi.dispatch(
           addAlert({
             type: "info",
@@ -94,25 +95,47 @@ listenerMiddleware.startListening({
               : null,
           })
         );
+        listenerApi.dispatch(
+          addLog({
+            adminName: state.auth.user?.name || "System",
+            action: "Vehicle Entry",
+            target: action.payload?.registrationNumber || action.payload?.regNumber || "Unknown",
+            targetType: "Vehicle",
+            status: "success",
+            details: `Entered slot ${slot?.name || slotId}`
+          })
+        );
       }
     } else if (
       action.type === "vehicles/moveToOutVehicle" ||
-      action.type === "vehicles/moveToLostToken"
+      action.type === "vehicles/moveToLostToken" ||
+      action.type === "vehicles/blockVehicle"
     ) {
       const { id } = action.payload;
-      // Find the vehicle in outVehicles (since it was just moved there)
-      const vehicle = state.vehicles.outVehicles.find((v) => v.id === id);
+      const vehicle = action.type === "vehicles/blockVehicle" 
+        ? state.vehicles.inVehicles.find((v) => v.id === id)
+        : state.vehicles.outVehicles.find((v) => v.id === id);
       if (vehicle && vehicle.slotId) {
         listenerApi.dispatch(decrementSlotUsage(vehicle.slotId));
-        // Vehicle exit alert
-        listenerApi.dispatch(
-          addAlert({
-            type: "info",
-            message: `Vehicle exited${vehicle.registrationNumber ? ` (${vehicle.registrationNumber})` : ""}`,
-            related: { type: "vehicle", id: vehicle.id, path: `/dashboard/out-vehicles` },
-          })
-        );
-        // If moved due to lost token, add critical alert
+        if (action.type === "vehicles/moveToOutVehicle") {
+          listenerApi.dispatch(
+            addAlert({
+              type: "info",
+              message: `Vehicle exited${vehicle.registrationNumber ? ` (${vehicle.registrationNumber})` : ""}`,
+              related: { type: "vehicle", id: vehicle.id, path: `/dashboard/out-vehicles` },
+            })
+          );
+          listenerApi.dispatch(
+            addLog({
+              adminName: state.auth.user?.name || "System",
+              action: "Vehicle Exit",
+              target: vehicle.registrationNumber || vehicle.regNumber || "Unknown",
+              targetType: "Vehicle",
+              status: "success",
+              details: `Exited slot ${state.slots.find(s => s.id === vehicle.slotId)?.name || vehicle.slotId}`
+            })
+          );
+        }
         if (action.type === "vehicles/moveToLostToken") {
           listenerApi.dispatch(
             addAlert({
@@ -122,6 +145,28 @@ listenerMiddleware.startListening({
             })
           );
         }
+        if (action.type === "vehicles/blockVehicle") {
+          listenerApi.dispatch(blockVehicleInBlocked({ ...vehicle, blockReason: action.payload.blockReason || "No reason provided" }));
+          listenerApi.dispatch(
+            addAlert({
+              type: "warning",
+              message: `Vehicle blocked: ${vehicle.registrationNumber || vehicle.parkingNumber || vehicle.id}`,
+              related: { type: "vehicle", id: vehicle.id, path: `/dashboard/blocked-vehicles` },
+            })
+          );
+        }
+      }
+    } else if (action.type === "vehicles/unblockVehicle") {
+      const vehicle = action.payload;
+      if (vehicle && vehicle.slotId) {
+        listenerApi.dispatch(incrementSlotUsage(vehicle.slotId));
+        listenerApi.dispatch(
+          addAlert({
+            type: "info",
+            message: `Vehicle unblocked: ${vehicle.registrationNumber || vehicle.parkingNumber || vehicle.id}`,
+            related: { type: "vehicle", id: vehicle.id, path: `/dashboard/in-vehicles` },
+          })
+        );
       }
     }
   },
@@ -139,6 +184,9 @@ export const store = configureStore({
     alerts: alertsReducer,
     slotTypes: slotTypesReducer,
     expenseTypes: expenseTypesReducer,
+    admins: adminsReducer,
+    blockedVehicles: blockedVehiclesReducer,
+    audit: auditReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(listenerMiddleware.middleware),

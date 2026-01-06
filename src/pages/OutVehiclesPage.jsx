@@ -65,7 +65,7 @@ const OutVehiclesPage = () => {
                     <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-900">
                       <Link
                         to={`/dashboard/out-vehicle-details/${vehicle.id}`}
-                        className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
+                        className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
                       >
                         Details
                       </Link>

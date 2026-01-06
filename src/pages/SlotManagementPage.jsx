@@ -9,10 +9,8 @@ const SlotManagementPage = () => {
   const slots = useSelector((state) => state.slots);
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this slot?")) {
-      dispatch(deleteSlot(id));
-      toast.success("Slot deleted successfully");
-    }
+    dispatch(deleteSlot(id));
+    toast.success("Slot deleted successfully");
   };
 
   const handleReserve = (id) => {
@@ -36,10 +34,6 @@ const SlotManagementPage = () => {
   };
 
   const handleEdit = (slot) => {
-    // For now, since edit is inline, but user didn't specify, keep as is or remove.
-    // The user said only existing slots, so perhaps remove edit, but to keep functionality, keep.
-    // But the requirements say "only the existing slots", so maybe remove edit.
-    // The columns include Actions, so keep edit and delete.
   };
 
   return (
@@ -52,7 +46,7 @@ const SlotManagementPage = () => {
           </div>
           <Link
             to="../add-slot"
-            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-6 py-3 rounded-2xl font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 inline-flex items-center"
+            className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-6 py-3 rounded-2xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center"
           >
             <FaPlus className="w-5 h-5 mr-2" />
             Add Slot

@@ -29,11 +29,9 @@ const slotsSlice = createSlice({
       const { id, ...updates } = action.payload;
       const slot = state.find((s) => s.id === id);
       if (slot) {
-        // Prevent reducing capacity below currently used count
         if (updates.capacity !== undefined) {
           const newCap = parseInt(updates.capacity, 10) || 0;
           if (newCap < slot.used) {
-            // clamp capacity to at least used
             updates.capacity = slot.used;
           } else {
             updates.capacity = newCap;

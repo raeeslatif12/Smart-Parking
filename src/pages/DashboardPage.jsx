@@ -116,38 +116,38 @@ const DashboardPage = () => {
             Today Summary
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl transition-all duration-300 group">
               <p className="text-3xl font-bold text-gray-900 mb-2">{Math.round(todayIn)}</p>
               <p className="text-sm text-gray-600 font-medium mb-4">Today IN Vehicles</p>
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl transition-transform duration-300">
                 <FaArrowUp className="w-6 h-6 text-white" />
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl transition-all duration-300 group">
               <p className="text-3xl font-bold text-gray-900 mb-2">{Math.round(todayOut)}</p>
               <p className="text-sm text-gray-600 font-medium mb-4">Today OUT Vehicles</p>
-              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center shadow-xl transition-transform duration-300">
                 <FaArrowDown className="w-6 h-6 text-white" />
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl transition-all duration-300 group">
               <p className="text-3xl font-bold text-emerald-600 mb-2">${Math.round(todayIncome)}</p>
               <p className="text-sm text-gray-600 font-medium mb-4">Today Total Income</p>
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-xl transition-transform duration-300">
                 <FaDollarSign className="w-6 h-6 text-white" />
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl transition-all duration-300 group">
               <p className="text-3xl font-bold text-red-600 mb-2">${Math.round(todayExpenses)}</p>
               <p className="text-sm text-gray-600 font-medium mb-4">Today Total Expenses</p>
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-xl transition-transform duration-300">
                 <FaDollarSign className="w-6 h-6 text-white" />
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl transition-all duration-300 group">
               <p className="text-3xl font-bold text-[#155dfc] mb-2">${Math.round(todayNetProfit)}</p>
               <p className="text-sm text-gray-600 font-medium mb-4">Today Net Profit</p>
-              <div className="w-12 h-12 bg-gradient-to-br from-[#155dfc] to-[#0d4ae8] rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#155dfc] to-[#0d4ae8] rounded-2xl flex items-center justify-center shadow-xl transition-transform duration-300">
                 <FaDollarSign className="w-6 h-6 text-white" />
               </div>
             </div>
@@ -157,13 +157,13 @@ const DashboardPage = () => {
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
+              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100/80 hover:shadow-2xl transition-all duration-300 group">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <p className="text-sm font-medium text-gray-600 mb-2">{stat.title}</p>
                     <p className="text-3xl font-bold text-gray-900 mb-4">{stat.value}</p>
                   </div>
-                  <div className="w-14 h-14 bg-gradient-to-br from-[#155dfc]/10 to-[#0d4ae8]/5 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[#155dfc]/10 to-[#0d4ae8]/5 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-300">
                     <Icon className="w-7 h-7 text-[#155dfc]" />
                   </div>
                 </div>
@@ -238,7 +238,7 @@ const DashboardPage = () => {
                     }`}></span>
                     <span className="text-sm text-gray-800 font-medium">{alert.message}</span>
                   </div>
-                  <button onClick={() => dispatch(removeAlert(alert.id))} className="text-gray-400 hover:text-gray-600 p-2 rounded-xl hover:bg-gray-100 transition-all duration-200 hover:scale-110">
+                  <button onClick={() => dispatch(removeAlert(alert.id))} className="text-gray-400 hover:text-gray-600 p-2 rounded-xl hover:bg-gray-100 transition-all duration-200">
                     ×
                   </button>
                 </li>

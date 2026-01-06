@@ -29,7 +29,16 @@ import SlotTypesManagementPage from "./pages/SlotTypesManagementPage";
 import ExpenseTypesManagementPage from "./pages/ExpenseTypesManagementPage";
 import AddSlotTypePage from "./pages/AddSlotTypePage";
 import AddExpenseTypePage from "./pages/AddExpenseTypePage";
+import AdminManagementPage from "./pages/AdminManagementPage";
+import AddAdminPage from "./pages/AddAdminPage";
+import EditAdminPage from "./pages/EditAdminPage";
+import BlockedVehiclesPage from "./pages/BlockedVehiclesPage";
+import BulkActionsPage from "./pages/BulkActionsPage";
+import QuickActionsPage from "./pages/QuickActionsPage";
+import AuditLogsPage from "./pages/AuditLogsPage";
+import HeatmapAnalyticsPage from "./pages/HeatmapAnalyticsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -86,6 +95,70 @@ function App() {
           <Route path="add-slot-type" element={<AddSlotTypePage />} />
           <Route path="expense-types" element={<ExpenseTypesManagementPage />} />
           <Route path="add-expense-type" element={<AddExpenseTypePage />} />
+          <Route
+            path="admin-management"
+            element={
+              <AdminProtectedRoute>
+                <AdminManagementPage />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="admin-management/add"
+            element={
+              <AdminProtectedRoute>
+                <AddAdminPage />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="admin-management/edit/:id"
+            element={
+              <AdminProtectedRoute>
+                <EditAdminPage />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="blocked-vehicles"
+            element={
+              <AdminProtectedRoute>
+                <BlockedVehiclesPage />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="bulk-actions"
+            element={
+              <AdminProtectedRoute>
+                <BulkActionsPage />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="quick-actions"
+            element={
+              <AdminProtectedRoute>
+                <QuickActionsPage />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="audit-logs"
+            element={
+              <AdminProtectedRoute>
+                <AuditLogsPage />
+              </AdminProtectedRoute>
+            }
+          />
+          <Route
+            path="analytics"
+            element={
+              <AdminProtectedRoute>
+                <HeatmapAnalyticsPage />
+              </AdminProtectedRoute>
+            }
+          />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

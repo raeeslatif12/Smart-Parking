@@ -1,8 +1,29 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { blockVehicle } from "../store/vehiclesSlice";
+import { blockVehicle as blockVehicleAction } from "../store/blockedVehiclesSlice";
+import { FaBan } from "react-icons/fa";
 
 const InVehiclesPage = () => {
   const inVehicles = useSelector((state) => state.vehicles.inVehicles);
+  const dispatch = useDispatch();
+  const [blockModal, setBlockModal] = useState({ isOpen: false, vehicle: null });
+  const [blockReason, setBlockReason] = useState("");
+
+  const handleBlock = () => {
+    if (blockModal.vehicle && blockReason.trim()) {
+      const vehicleToBlock = {
+        ...blockModal.vehicle,
+        blockReason,
+        blockedAt: new Date().toISOString(),
+      };
+      dispatch(blockVehicle({ id: blockModal.vehicle.id }));
+      dispatch(blockVehicleAction(vehicleToBlock));
+      setBlockModal({ isOpen: false, vehicle: null });
+      setBlockReason("");
+    }
+  };
 
   return (
     <div className="py-6">
@@ -35,7 +56,7 @@ const InVehiclesPage = () => {
                       <td className="px-6 py-5 text-sm text-gray-900">
                         <div className="flex flex-col">
                           <span className="font-bold text-gray-900 text-base">
-                            {vehicle.regNumber}
+                            {vehicle.registrationNumber}
                           </span>
                           <div className="text-gray-500 text-xs space-y-1 sm:hidden mt-2">
                             <div>Company: {vehicle.company}</div>
@@ -62,12 +83,21 @@ const InVehiclesPage = () => {
                         {vehicle.ownerName}
                       </td>
                       <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-900">
-                        <Link
-                          to={`/dashboard/manage-incoming/${vehicle.id}`}
-                          className="bg-gradient-to-r from-[#155dfc] to-[#0d4ae8] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 inline-flex items-center justify-center w-full sm:w-auto"
-                        >
-                          Manage
-                        </Link>
+                        <div className="flex gap-2">
+                          <Link
+                            to={`/dashboard/manage-incoming/${vehicle.id}`}
+                            className="bg-[#155dfc] text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 inline-flex items-center justify-center"
+                          >
+                            Manage
+                          </Link>
+                          <button
+                            onClick={() => setBlockModal({ isOpen: true, vehicle })}
+                            className="bg-red-500 text-white px-4 py-2 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:bg-red-600 transition-all duration-300 inline-flex items-center gap-2"
+                          >
+                            <FaBan className="w-4 h-4" />
+                            Block
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -89,6 +119,45 @@ const InVehiclesPage = () => {
             </div>
           </div>
       </div>
+
+      {/* Block Modal */}
+      {blockModal.isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Block Vehicle</h2>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to block vehicle <strong>{blockModal.vehicle?.registrationNumber}</strong>?
+            </p>
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Block Reason</label>
+              <textarea
+                value={blockReason}
+                onChange={(e) => setBlockReason(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#155dfc] focus:border-transparent"
+                rows="3"
+                placeholder="Enter reason for blocking..."
+                required
+              />
+            </div>
+            <div className="flex gap-4">
+              <button
+                onClick={handleBlock}
+                className="flex-1 bg-red-500 text-white py-3 rounded-xl font-semibold hover:bg-red-600 transition-colors"
+                disabled={!blockReason.trim()}
+              >
+                Block Vehicle
+              </button>
+              <button
+                onClick={() => setBlockModal({ isOpen: false, vehicle: null })}
+                className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-xl font-semibold hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

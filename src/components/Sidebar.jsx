@@ -1,4 +1,4 @@
-// src/components/Sidebar.jsx
+
 import { useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
 import {
@@ -15,6 +15,12 @@ import {
   FaList,
   FaBell,
   FaFileInvoiceDollar,
+  FaUserShield,
+  FaBan,
+  FaTasks,
+  FaBolt,
+  FaHistory,
+  FaChartLine,
 } from "react-icons/fa";
 
 const Sidebar = ({ isOpen, toggleSidebar, className }) => {
@@ -39,6 +45,15 @@ const Sidebar = ({ isOpen, toggleSidebar, className }) => {
     { name: "Expense Types", path: "/dashboard/expense-types", icon: FaFileInvoiceDollar },
   ];
 
+  const adminMenuItems = [
+    { name: "Admin Management", path: "/dashboard/admin-management", icon: FaUserShield },
+    { name: "Blocked Vehicles", path: "/dashboard/blocked-vehicles", icon: FaBan },
+    { name: "Bulk Actions", path: "/dashboard/bulk-actions", icon: FaTasks },
+    { name: "Quick Actions", path: "/dashboard/quick-actions", icon: FaBolt },
+    { name: "Audit Logs", path: "/dashboard/audit-logs", icon: FaHistory },
+    { name: "Analytics", path: "/dashboard/analytics", icon: FaChartLine },
+  ];
+
   return (
     <>
       {isOpen && (
@@ -48,16 +63,18 @@ const Sidebar = ({ isOpen, toggleSidebar, className }) => {
         />
       )}
       <div
-        className={`fixed left-0 top-0 z-30 h-screen w-64 bg-white shadow-2xl border-r border-gray-100 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"} ${className || ""}`}
+        className={`fixed left-0 top-0 z-30 h-screen bg-white shadow-2xl border-r border-gray-100 flex flex-col transition-all duration-300 ease-in-out lg:translate-x-0 w-64 ${isOpen ? "translate-x-0" : "-translate-x-full"} ${className || ""}`}
       >
         {/* User Info */}
-        <div className="border-b border-gray-100 p-6 flex items-center space-x-4">
-          <div className="w-12 h-12 bg-[#155dfc] text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow">
-            {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
-          </div>
-          <div className="truncate">
-            <p className="text-sm font-semibold text-gray-900 truncate">{user?.name || "User"}</p>
-            <p className="text-xs text-gray-500 truncate">Administrator</p>
+        <div className="border-b border-gray-100 p-6">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-[#155dfc] text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow">
+              {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+            </div>
+            <div className="truncate">
+              <p className="text-sm font-semibold text-gray-900 truncate">{user?.name || "User"}</p>
+              <p className="text-xs text-gray-500 truncate">Administrator</p>
+            </div>
           </div>
         </div>
 
@@ -87,6 +104,25 @@ const Sidebar = ({ isOpen, toggleSidebar, className }) => {
               </NavLink>
             );
           })}
+          {user?.role === 'super_admin' ? adminMenuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={`group flex items-center py-3 px-4 rounded-xl transition-all duration-200 text-base font-medium overflow-hidden ${
+                  isActive
+                    ? "bg-[#155dfc]/10 text-[#155dfc] shadow-sm border border-[#155dfc]/20"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                }`}
+                onClick={() => window.innerWidth < 1024 && toggleSidebar()}
+              >
+                <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-[#155dfc]" : "text-gray-500 group-hover:text-gray-700"}`} />
+                <span className="ml-3 truncate">{item.name}</span>
+              </NavLink>
+            );
+          }) : null}
         </nav>
       </div>
     </>

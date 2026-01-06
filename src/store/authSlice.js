@@ -12,15 +12,17 @@ const getInitialState = () => {
     return {
       isAuthenticated: auth.isAuthenticated,
       user: auth.user,
+      storedCredentials: auth.storedCredentials || null,
       username: "",
       password: "",
     };
   }
   return {
     isAuthenticated: false,
-    user: { name: "admin", password: "password123" },
-    username: "admin",
-    password: "",
+    user: { name: "Super Admin", password: "password", role: "super_admin" },
+    storedCredentials: null,
+    username: "super",
+    password: "password",
   };
 };
 
@@ -33,17 +35,23 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.isAuthenticated = true;
       state.user = action.payload;
+      state.storedCredentials = {
+        username: action.payload.username,
+        password: action.payload.password
+      };
       setItem(STORAGE_KEYS.AUTH, {
         isAuthenticated: true,
         user: action.payload,
+        storedCredentials: state.storedCredentials,
       });
     },
+    
     logout: (state) => {
       state.isAuthenticated = false;
-      setItem(STORAGE_KEYS.AUTH, {
-        isAuthenticated: false,
-        user: state.user,
-      });
+      state.username = "";
+      state.password = "";
+      state.storedCredentials = null;
+      removeItem(STORAGE_KEYS.AUTH);
     },
     updateUser: (state, action) => {
       state.user = {
@@ -69,9 +77,13 @@ const authSlice = createSlice({
     setPassword: (state, action) => {
       state.password = action.payload;
     },
+    resetLoginForm: (state) => {
+      state.username = "";
+      state.password = "";
+    },
   },
 });
 
-export const { login, logout, loadAuth, setUsername, setPassword, updateUser } =
+export const { login, logout, loadAuth, setUsername, setPassword, updateUser, resetLoginForm } =
   authSlice.actions;
 export default authSlice.reducer;
